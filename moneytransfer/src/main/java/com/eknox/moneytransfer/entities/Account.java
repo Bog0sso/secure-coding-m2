@@ -6,21 +6,27 @@ package com.eknox.moneytransfer.entities;
  
 public class Account() 
 {
- private double amount;
+ private double balance;
  private int numcompte;
  Account(){}
- Account(double amount)
+ Account(double balance)
  {
-   this.amount = amount;
+   this.balance = balance;
  }
  
- public double getAmount()
+ public double getBalance()
  {
-   return amout;
+   return balance;
  }
+ public int getNumCompte() {
+        return numcompte;
+    }
+ public void setNumCompte(int numcompte) {
+        this.numcompte = numcompte;
+    }
  public static void Afficher()
  {
   Account cpt = new Account(0.0);
-  System.out.println("le solde est de : " +cpt.getAmount() + "FCFA");
+  System.out.println("le solde est de : " +cpt.getBalance() + "FCFA");
  } 
 }
