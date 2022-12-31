@@ -3,10 +3,10 @@ import java.util.Scanner;
 
 public class Transaction {
 	Scanner sc = new Scanner(System.in);
-	private double montant = sc.nextDouble();
+	private double amount = sc.nextDouble();
 	private int numtel = sc.nextInt();
-	Compte cpt = new Compte();
-	private double solde = cpt.getSolde();
+	Account cpt = new Account();
+	private double balance = cpt.getBalance();
 	public enum TypeTransaction { RETRAIT, TRANSFERT, DEPOT, ACHAT, VENTE }
 	
 	public void Transat (TypeTransaction typeTransaction) {
@@ -14,39 +14,39 @@ public class Transaction {
 		switch (typeTransaction) {
 		
 		case RETRAIT:
-			System.out.println("Effectuez un retrait de : " +montant+ "FCFA");
+			System.out.println("Effectuez un retrait de : " +amount+ "FCFA");
 			System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-			DeduireMontant(montant, cpt);
+			DeduireMontant(amount, cpt);
 			break;
 			
 		case TRANSFERT:
-	         System.out.println("Effectuez un transfert de : " +montant+ "FCFA");
+	         System.out.println("Effectuez un transfert de : " +amount+ "FCFA");
 	         System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-	         DeduireMontant(montant, cpt);
+	         DeduireMontant(amount, cpt);
 			break;
 			
 		case DEPOT:
-			 System.out.println("Effectuez un depot de : " +montant+ "FCFA");
+			 System.out.println("Effectuez un depot de : " +amount+ "FCFA");
 			 System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-			 AjouterMontant(montant, cpt);
+			 AjouterMontant(amount, cpt);
 			break;
 		case ACHAT:
-			 System.out.println("Effectuez un achat de : " +montant+ "FCFA");
-			 DeduireMontant(montant, cpt);
+			 System.out.println("Effectuez un achat de : " +amount+ "FCFA");
+			 DeduireMontant(amount, cpt);
 			break;
 		case VENTE:
-			System.out.println("Effectuez une vente de : " +montant+ "FCFA");
-			AjouterMontant(montant,cpt);
+			System.out.println("Effectuez une vente de : " +amount+ "FCFA");
+			AjouterMontant(amount,cpt);
 			break;
 		}
 	}
 	    
-	    public void DeduireMontant(double montant, Compte cpt)
+	    public void DeduireMontant(double amount, Account cpt)
 	    {
-	      if(solde>=montant)
+	      if(balance>=amount)
 	      {
-	    	  solde -= montant;
-	    	  System.out.println("Le solde est de : " + solde + "FCFA");
+	    	  balance -= amount;
+	    	  System.out.println("Le solde est de : " + balance + "FCFA");
 	      }
 	      else
 	      {
@@ -55,9 +55,9 @@ public class Transaction {
 	      
 	    }
 	    
-		public void AjouterMontant(double montant, Compte cpt)
+		public void AjouterMontant(double amount, Account cpt)
 		{
-			solde+=montant;
-			System.out.println("Le solde est de : " + solde + "FCFA");
+			balance+=amount;
+			System.out.println("Le solde est de : " + balance + "FCFA");
 		}
 }
