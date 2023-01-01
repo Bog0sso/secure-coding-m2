@@ -1,63 +1,100 @@
 package com.eknox.moneytransfer.entities;
-import java.util.Scanner;
-
+import java.util.Date;
+import enums.*;
 public class Transaction {
-	Scanner sc = new Scanner(System.in);
-	private double amount = sc.nextDouble();
-	private int numtel = sc.nextInt();
-	Account cpt = new Account();
-	private double balance = cpt.getBalance();
-	public enum TypeTransaction { RETRAIT, TRANSFERT, DEPOT, ACHAT, VENTE }
+		private String id,numDestinataire;
+	    private Status status;
+	    private double montant;
+	    private Devise devise;
+	    private Date dateTrans;
+
+	    
 	
-	public void Transat (TypeTransaction typeTransaction) {
-		
-		switch (typeTransaction) {
-		
-		case RETRAIT:
-			System.out.println("Effectuez un retrait de : " +amount+ "FCFA");
-			System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-			DeduireMontant(amount, cpt);
-			break;
-			
-		case TRANSFERT:
-	         System.out.println("Effectuez un transfert de : " +amount+ "FCFA");
-	         System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-	         DeduireMontant(amount, cpt);
-			break;
-			
-		case DEPOT:
-			 System.out.println("Effectuez un depot de : " +amount+ "FCFA");
-			 System.out.println("Saisir le numéro de téléphone du destinataire : " +numtel);
-			 AjouterMontant(amount, cpt);
-			break;
-		case ACHAT:
-			 System.out.println("Effectuez un achat de : " +amount+ "FCFA");
-			 DeduireMontant(amount, cpt);
-			break;
-		case VENTE:
-			System.out.println("Effectuez une vente de : " +amount+ "FCFA");
-			AjouterMontant(amount,cpt);
-			break;
+public Transaction(String id, String numDestinataire, Status status, double montant, Devise devise,
+				Date dateTrans) {
+			super();
+			this.setId(id);;
+			this.setNumDestinataire(numDestinataire);
+			this.setStatus(status);
+			this.setMontant(montant);
+			this.setDevise(devise);
+			this.setDateTrans(dateTrans);
 		}
-	}
-	    
-	    public void DeduireMontant(double amount, Account cpt)
-	    {
-	      if(balance>=amount)
-	      {
-	    	  balance -= amount;
-	    	  System.out.println("Le solde est de : " + balance + "FCFA");
-	      }
-	      else
-	      {
-	    	  System.out.println("Pas assez d'argent au niveau du compte");
-	      }
-	      
-	    }
-	    
-		public void AjouterMontant(double amount, Account cpt)
-		{
-			balance+=amount;
-			System.out.println("Le solde est de : " + balance + "FCFA");
-		}
+
+
+
+private String getId() {
+	return id;
+}
+
+
+
+private void setId(String id) {
+	this.id = id;
+}
+
+
+
+private String getNumDestinataire() {
+	return numDestinataire;
+}
+
+
+
+private void setNumDestinataire(String numDestinataire) {
+	this.numDestinataire = numDestinataire;
+}
+
+
+
+private Status getStatus() {
+	return status;
+}
+
+
+
+private void setStatus(Status status) {
+	this.status = status;
+}
+
+
+
+private double getMontant() {
+	return montant;
+}
+
+
+
+private void setMontant(double montant) {
+	this.montant = montant;
+}
+
+
+
+private Devise getDevise() {
+	return devise;
+}
+
+
+
+private void setDevise(Devise devise) {
+	this.devise = devise;
+}
+
+
+
+private Date getDateTrans() {
+	return dateTrans;
+}
+
+
+
+private void setDateTrans(Date dateTrans) {
+	this.dateTrans = dateTrans;
+}
+
+
+
+
+	
 }
