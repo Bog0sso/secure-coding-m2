@@ -1,15 +1,19 @@
 package com.eknox.moneytransfer.entities;
 
+import lombok.*;
+
 /**
  * Account
  */
+@NoArgsConstructor
+public class Account {
+  
+  private final String      numCompte; 
+  private final String      nomUtilisateur;  
+  private final String      password; 
+  private final Date        dateOuverture; 
+  private final Double      solde; 
 
-public class Account() 
-{
-private double balance;
-private int numcompte;
-private int decouvert;
-Account(){}
 Account(double balance)
 {
   this.balance = balance;
