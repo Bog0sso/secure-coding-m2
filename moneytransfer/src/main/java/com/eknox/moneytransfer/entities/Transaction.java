@@ -1,99 +1,43 @@
 package com.eknox.moneytransfer.entities;
+
+// DEVELOPPER IMPORT
+import com.eknox.moneytransfer.enums.TypeTransaction;
+// LANGUAGE IMPORT
 import java.util.Date;
 import enums.*;
-public class Transaction {
-		private String id,numDestinataire;
-	    private Status status;
-	    private double montant;
-	    private Devise devise;
-	    private Date dateTrans;
 
-	    
+public class Transaction {
+	//Core information
+		@Id
+		private Long transaction_ID;
+		private String numOrigine;
+		private String numDestinataire;
+	    private double montantTransaction;
+	    private Devise devise;
+		private Date dateTransaction;
+		private TypeTransaction typeTransaction;
+		private StatusTransaction statusTransaction = StatusTransaction.ATTENTE; // Le status par défaut des transactions est "en attente"
+
+	//Tracing information
+		private double soldeEmetteurAvant;
+		private double soldeEmetteurApres;
+		private double soldeRecepteurAvant;
+		private double soldeRecepteurApres;
+
 	
-public Transaction(String id, String numDestinataire, Status status, double montant, Devise devise,
-				Date dateTrans) {
+public Transaction(String transaction_ID,String numOrigine, String numDestinataire, StatusTransaction statusTransaction, double montantTransaction, Devise devise,TypeTransaction typeTransaction,
+				   StatusTransaction statusTransaction) {
 			super();
-			this.setId(id);;
+			this.setTrasaction_ID(transaction_ID);
+			this.setNumOrigine(numOrigine)
 			this.setNumDestinataire(numDestinataire);
-			this.setStatus(status);
-			this.setMontant(montant);
+			this.setStatusTransaction(statusTransaction);
+			this.setMontantTransaction(montantTransaction);
 			this.setDevise(devise);
-			this.setDateTrans(dateTrans);
+			this.setDateTransaction(System.currentTimeMillis());
 		}
 
-
-
-private String getId() {
-	return id;
-}
-
-
-
-private void setId(String id) {
-	this.id = id;
-}
-
-
-
-private String getNumDestinataire() {
-	return numDestinataire;
-}
-
-
-
-private void setNumDestinataire(String numDestinataire) {
-	this.numDestinataire = numDestinataire;
-}
-
-
-
-private Status getStatus() {
-	return status;
-}
-
-
-
-private void setStatus(Status status) {
-	this.status = status;
-}
-
-
-
-private double getMontant() {
-	return montant;
-}
-
-
-
-private void setMontant(double montant) {
-	this.montant = montant;
-}
-
-
-
-private Devise getDevise() {
-	return devise;
-}
-
-
-
-private void setDevise(Devise devise) {
-	this.devise = devise;
-}
-
-
-
-private Date getDateTrans() {
-	return dateTrans;
-}
-
-
-
-private void setDateTrans(Date dateTrans) {
-	this.dateTrans = dateTrans;
-}
-
-
+		// Les getters et setteurs seront remplacées par des annotations Lombok pour éviter d'avoir un code extensif.
 
 
 	
