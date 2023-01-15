@@ -1,14 +1,12 @@
 package com.eknox.moneytransfer.entities;
-
+// LANGUAGE IMPORT
+import jakarta.persistence.*;
 import lombok.*;
 
-/*
-- compte_ID : String
-- nomUtilisateur : String
-- password: String
-- dateOuverture: Date
-- solde: Double
-*/
+import java.io.Serializable;
+import java.util.Date;
+// DEVELOPPER IMPORT
+import com.eknox.moneytransfer.enums.Devise;
 
 /**
  * Account
@@ -18,17 +16,22 @@ import lombok.*;
  * Les découverts ne sont pas autorisée, nous sommmes dans un système de mobile money - pas un système bancaire
  */
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Data
+@Table( name = "accounts")
 public class Account {
-  
-  private final String      numCompte;
-  private final String      username;
-  private final String      password; 
-  private final Date        dateOuverture; 
-  private final Double      balance = 0;
-  private final Devise      defaultDevise = Devise.XOF
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long      numCompte;
+  private String      username;
+  private String      password;
+  private Date        dateOuverture;
+  private Double      balance = 0.0;
+  private final Devise      defaultDevise = Devise.XOF;
   // CONSTRAINTS
   //1 . BCEAO : max balance is 2_000_000
-  private final Double      SOLDEMAX= 2_000_000;
+  private final Double      SOLDEMAX= 2_000_000.0;
 
 Account(String username, String password){
   this.username = username;
@@ -36,10 +39,9 @@ Account(String username, String password){
 
 }
 
-public static void Afficher()
-{ // Cette méthode peut être intéressante dans le cas d'usage avec une CLI
-  Account cpt = new Account(0.0);
-
+public void afficher()
+{
+  // Cette méthode peut être intéressante dans le cas d'usage avec une CLI
   System.out.println("le solde est de : " + this.getBalance() + "XOF");
 
 }
@@ -48,7 +50,7 @@ public static void Afficher()
 *pour éviter des accès concurrents sur un compte.
 *@param montant
 */
-public synchronized void debiter(int montant)
+public synchronized void debiter(double montant)
 {
 montant = montant >=0 ? montant : -montant;
 if(this.balance >= montant)
@@ -62,12 +64,12 @@ if(this.balance >= montant)
 *pour eviter des accès concurrents sur un compte donne.
 *@param montant
 */
-public synchronized void crediter(int montant)
+public synchronized void crediter(double montant)
 {
   // On doit créditer les comptes en tenant compte de la variable
 montant = montant >= 0 ? montant : -montant;
-if(this.solde + montant <= SOLDEMAX)
-  this.solde += montant;
+if(this.balance + montant <= SOLDEMAX)
+  this.balance += montant;
 }
 /*
 * - notifierTransaction():void

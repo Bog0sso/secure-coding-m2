@@ -1,33 +1,30 @@
 package com.eknox.moneytransfer.entities;
 
+import jakarta.persistence.*;
+
 import lombok.*;
+import org.springframework.context.annotation.Bean;
 
-@Entity 
+import java.io.Serializable;
+import java.util.Date;
+@AllArgsConstructor
 @NoArgsConstructor
-public abstract class User implements Serializable{
-@Getter
-String private final   user_ID;
-
-@Getter @Setter
-String private final   nom;
-
-@Getter @Setter
-String private final   prenom;
-
-@Getter @Setter
-Date   private final   dateNaissance;
-
-@Getter
-String private final   lieuNaissance; 
-
-@Getter 
-String private final   numeroTelephone; 
-
-@Getter @Setter
-String private final   email; 
-
-@Getter @Setter
-String private final   adresse ; 
-public User(){}
+@Entity
+@Data
+@Table(name = "users")
+public class User implements Serializable{
+    // Cette classe ne sera pas abstraite pour le besoin de développement
+    private static final long serialVersionUID = 2460416724595556972L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long      user_ID;
+    private String    nom;
+    private String    prenom;
+    private Date      dateNaissance;
+    private String    lieuNaissance;
+    private String    numeroTelephone;
+    private String    email;
+    private String    adresse ;
 
 }

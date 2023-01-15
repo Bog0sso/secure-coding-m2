@@ -1,10 +1,24 @@
 package com.eknox.moneytransfer.web;
+//DEVELOPPER IMPORT
+import com.eknox.moneytransfer.dao.UserRepository;
+import com.eknox.moneytransfer.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
+
+@RestController
 public class UserController {
     @Autowired
-    private UserReposiotory UserRepository;
-    // LISTING DES UTILISATEURS - SEULEMENT ACCESSIBLE AUX ADMINISTRATEURS/AUDITEURS
-    @RequestMapping(value = "/")
+    private UserRepository userRepository;
+
+    @RequestMapping(value = "/index")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "8") int size,
@@ -22,8 +36,19 @@ public class UserController {
 
 
 
-    // CREATE
-    @PostMapping(value = "/addUser")
+    @GetMapping(value = "/delete")
+    public String deleteById(Long idUser, int page, int size, String keyword) {
+        userRepository.deleteById(idUser);
+        return "redirect:/index?page=" + page + "&size=" + size + "&keyword=" + keyword;
+    }
+
+    @GetMapping(value = "/formUser")
+    public String addNewUser(Model model) {
+        model.addAttribute("user", new User());
+        return "formUser";
+    }
+
+    @PostMapping(value = "/save")
     public String save(Model model, @Validated User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "formUser";
@@ -32,24 +57,17 @@ public class UserController {
 
     }
 
-    //READ
-    @GetMapping(value="/")
-    public String homePage() {
-        return "redirect:/index";
-    }
-
-    //UPDATE
-    @GetMapping(value = "/updateUser")
+    @GetMapping(value = "/editUser")
     public String editUser( Long idUser ,Model model) {
         Optional <User> user = userRepository.findById(idUser);
         model.addAttribute("user", user);
         return "editUser";
     }
-    // DELETE
-    @GetMapping(value = "/delete")
-    public String deleteById(Long idUser, int page, int size, String keyword) {
-        userRepository.deleteById(idUser);
-        return "redirect:/index?page=" + page + "&size=" + size + "&keyword=" + keyword;
+
+    @GetMapping(value="/")
+    public String homePage() {
+        return "redirect:/index";
     }
-    // CRUD IS DONE
+
+
 }
