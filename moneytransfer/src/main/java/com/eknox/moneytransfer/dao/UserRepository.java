@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("select u from users u where u.numero_telephone like :queryString")
+    @Query("select u from User u where u.numeroTelephone like :queryString")
     public Page<User> searchUser(@Param("queryString") String keyword,Pageable pageable);
 }

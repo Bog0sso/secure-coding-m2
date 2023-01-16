@@ -8,8 +8,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor
-
-public abstract class User implements Serializable{
+@NoArgsConstructor
+@Entity
+@Data
+@Table(name = "users")
+public  class User implements Serializable{
     // Cette classe ne sera pas abstraite pour le besoin de développement
     private static final long serialVersionUID = 2460416724595556972L;
     @Id
@@ -24,7 +27,7 @@ public abstract class User implements Serializable{
     private String    email;
     private String    adresse ;
 
-  public void CreateAccount()
+ /* public void CreateAccount()
   {
     System.out.println("Renseignez votre nom :" +sc.next());
     System.out.println("Renseignez votre prénom :" +sc.next());
@@ -43,5 +46,5 @@ public abstract class User implements Serializable{
     System.out.println("Choisissez votre mot de passe :" +sc.next());
     System.out.println("Confirmez votre mot de passe :" +sc.next());
     System.out.println("Merci. Votre compte a été créé avec succés");
-  }
+  }*/
 }

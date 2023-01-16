@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    @Query("select t from transactions t where t.transaction_ID like :queryString")
+    @Query("select t from Transaction t where t.transaction_ID like :queryString")
     public Page<Transaction> searchTransaction(@Param("queryString") String keyword,Pageable pageable);
 }
