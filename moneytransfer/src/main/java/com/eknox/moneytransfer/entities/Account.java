@@ -3,10 +3,9 @@ package com.eknox.moneytransfer.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.Date;
 // DEVELOPPER IMPORT
-import com.eknox.moneytransfer.enums.Devise;
+import java.util.Currency;
 
 /**
  * Account
@@ -23,12 +22,13 @@ import com.eknox.moneytransfer.enums.Devise;
 public class Account {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long      numCompte;
+  private Long        numCompte;
   private String      username;
   private String      password;
   private Date        dateOuverture;
   private Double      balance = 0.0;
-  private final Devise      defaultDevise = Devise.XOF;
+//  private static  Device defaultDevise = Devise.XOF.name();
+  Currency currency = Currency.getInstance("XOF");
   // CONSTRAINTS
   //1 . BCEAO : max balance is 2_000_000
   private final Double      SOLDEMAX= 2_000_000.0;

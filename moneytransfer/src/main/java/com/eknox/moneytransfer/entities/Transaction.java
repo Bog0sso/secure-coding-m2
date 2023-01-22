@@ -1,7 +1,6 @@
 package com.eknox.moneytransfer.entities;
 
 // DEVELOPPER IMPORT
-import com.eknox.moneytransfer.enums.Devise;
 import com.eknox.moneytransfer.enums.TypeTransaction;
 import com.eknox.moneytransfer.enums.StatusTransaction;
 import jakarta.persistence.*;
@@ -21,7 +20,6 @@ public class Transaction {
 		private String numOrigine;
 		private String numDestinataire;
 	    private double montantTransaction;
-	    private Devise devise;
 		private Date dateTransaction;
 		private TypeTransaction typeTransaction;
 		private StatusTransaction statusTransaction = StatusTransaction.ATTENTE; // Le status par défaut des transactions est "en attente"
