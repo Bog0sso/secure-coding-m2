@@ -10,65 +10,77 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/v0/users")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    // Request body model
+    record UserRequest(
+            Integer   user_ID,
+            String    nom,
+            String    prenom,
+            Date      dateNaissance,
+            String    lieuNaissance,
+            String    numeroTelephone,
+            String    email,
+            String    adresse
+    ){}
 
-    @RequestMapping(value = "/index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "0") int page,
-                        @RequestParam(name = "size", defaultValue = "8") int size,
-                        @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        Page<User> pageUsers = userRepository.searchUser("%" + keyword + "%", PageRequest.of(page, size));
-        model.addAttribute("listUsers", pageUsers.getContent());
-        int[] pages = new int[pageUsers.getTotalPages()];
-        model.addAttribute("pages", pages);
-        model.addAttribute("size", size);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", keyword);
-
-        return "User";
-    }
-
-
-
-    @GetMapping(value = "/delete")
-    public String deleteById(Long idUser, int page, int size, String keyword) {
-        userRepository.deleteById(idUser);
-        return "redirect:/index?page=" + page + "&size=" + size + "&keyword=" + keyword;
-    }
-
-    @GetMapping(value = "/formUser")
-    public String addNewUser(Model model) {
-        model.addAttribute("user", new User());
-        return "formUser";
-    }
-
-    @PostMapping(value = "/save")
-    public String save(Model model, @Validated User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "formUser";
+    //CREATE - DONE
+    @PostMapping(value = "")
+    public void createUser(@RequestBody UserRequest request) {
+        User user = new User();
+        user.setNom(request.nom);
+        user.setPrenom(request.prenom);
+        user.setDateNaissance(request.dateNaissance);
+        user.setLieuNaissance(request.lieuNaissance);
+        user.setNumeroTelephone(request.numeroTelephone);
+        user.setEmail(request.email);
+        user.setAdresse(request.adresse);
         userRepository.save(user);
-        return "saveConfirmation";
+    }
+    //
 
+    //READ [ALL] - DONE
+    @GetMapping(value = "")
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+    //
+
+
+    //READ [SINGLE] - DONE
+    @GetMapping(value="{idUser}")
+    public User getSingleUser(@PathVariable("idUser") Integer idUser){
+        return userRepository.findById(idUser).get();
     }
 
-    @GetMapping(value = "/editUser")
-    public String editUser( Long idUser ,Model model) {
-        Optional <User> user = userRepository.findById(idUser);
-        model.addAttribute("user", user);
-        return "editUser";
+    //UPDATE [SINGLE] - DONE
+    @PutMapping(value = "{idUser}")
+    public void updateUser(@PathVariable("idUser") Integer idUser,@RequestBody UserRequest request ) {
+        User user = userRepository.findById(idUser).get();
+        user.setNom(request.nom);
+        user.setPrenom(request.prenom);
+        user.setDateNaissance(request.dateNaissance);
+        user.setLieuNaissance(request.lieuNaissance);
+        user.setNumeroTelephone(request.numeroTelephone);
+        user.setEmail(request.email);
+        user.setAdresse(request.adresse);
+        userRepository.save(user);
     }
+    //
 
-    @GetMapping(value="/")
-    public String homePage() {
-        return "redirect:/index";
+    //DELETE - DONE
+    @DeleteMapping(value = "{idUser}")
+    public void deleteSingleUser(@PathVariable("idUser") Integer idUser ) {
+        userRepository.deleteById(idUser);
     }
-
+    //
 
 }
