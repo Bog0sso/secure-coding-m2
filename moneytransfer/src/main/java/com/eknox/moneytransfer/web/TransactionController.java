@@ -1,7 +1,10 @@
 package com.eknox.moneytransfer.web;
-
+//DEVELOPPER IMPORT
+import com.eknox.moneytransfer.dao.AccountRepository;
 import com.eknox.moneytransfer.dao.TransactionRepository;
+import com.eknox.moneytransfer.entities.Account;
 import com.eknox.moneytransfer.entities.Transaction;
+import com.eknox.moneytransfer.enums.TypeTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,62 +13,73 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+
+@RestController
+@RequestMapping(value = "/api/v0/transactions")
 public class TransactionController {
-    //CRUD
-    // respecter le standard REST
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @RequestMapping(value = "/index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "0") int page,
-                        @RequestParam(name = "size", defaultValue = "8") int size,
-                        @RequestParam(name = "keyword", defaultValue = "") String keyword) {
-        Page<Transaction> pageTransactions = transactionRepository.searchTransaction("%" + keyword + "%", PageRequest.of(page, size));
-        model.addAttribute("listTransactions", pageTransactions.getContent());
-        int[] pages = new int[pageTransactions.getTotalPages()];
-        model.addAttribute("pages", pages);
-        model.addAttribute("size", size);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", keyword);
+    @Autowired
+    private AccountRepository accountRepository;
 
-        return "Transaction";
-    }
+    // Request body model
+    // #TODO: replace TransactionRequest attributes
+    record TransactionRequest(
+            Long               accountID,
+            TypeTransaction    typeTransaction,
+            double             montantTranction,
+            String             numOrigine,
+            String             numDestinataire
+    ){}
 
-
-
-    @GetMapping(value = "/delete")
-    public String deleteById(Long idTransaction, int page, int size, String keyword) {
-        transactionRepository.deleteById(idTransaction);
-        return "redirect:/index?page=" + page + "&size=" + size + "&keyword=" + keyword;
-    }
-
-    @GetMapping(value = "/formTransaction")
-    public String addNewTransaction(Model model) {
-        model.addAttribute("transaction", new Transaction());
-        return "formTransaction";
-    }
-
-    @PostMapping(value = "/addTransaction")
-    public String save(Model model, @Validated Transaction transaction, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "formTransaction";
+    //CREATE - DONE
+    @PostMapping(value = "")
+    public void createTransaction(@RequestBody TransactionRequest request) {
+        Transaction transaction = new Transaction();
+        transaction.setMontantTransaction(request.montantTranction);
+        transaction.setNumOrigine(request.numOrigine);
+        transaction.setNumDestinataire(request.numDestinataire);
+        Optional<Account> account = accountRepository.findById(request.accountID);
+        transaction.setEmitter(account.get());
         transactionRepository.save(transaction);
-        return "saveConfirmation";
+    }
+    //
 
+    //READ [ALL] - DONE
+    @GetMapping(value = "")
+    public List<Transaction> getAllTransactions(){
+        return transactionRepository.findAll();
+    }
+    //
+
+
+    //READ [SINGLE] - DONE
+    @GetMapping(value="{idTransaction}")
+    public Transaction getSingleTransaction(@PathVariable("idTransaction") Long idTransaction){
+        return transactionRepository.findById(idTransaction).get();
     }
 
-    @GetMapping(value = "/editTransaction")
-    public String editTransaction( Long idTransaction ,Model model) {
-        Optional<Transaction> transaction = transactionRepository.findById(idTransaction);
-        model.addAttribute("transaction", transaction);
-        return "editTransaction";
+    //UPDATE [SINGLE] - DONE
+    @PutMapping(value = "{idTransaction}")
+    public void updateTransaction(@PathVariable("idTransaction") Long idTransaction,@RequestBody TransactionRequest request ) {
+        Transaction transaction = transactionRepository.findById(idTransaction).get();
+        transaction.setMontantTransaction(request.montantTranction);
+        transaction.setNumOrigine(request.numOrigine);
+        transaction.setNumDestinataire(request.numDestinataire);
+        transactionRepository.save(transaction);
     }
+    //
 
-    @GetMapping(value="/")
-    public String homePage() {
-        return "redirect:/index";
+    //DELETE - DONE - Only for testing purposes
+    @DeleteMapping(value = "{idTransaction}")
+    public void deleteSingleTransaction(@PathVariable("idTransaction") Long idTransaction ) {
+        transactionRepository.deleteById(idTransaction);
     }
+    //
+
 }

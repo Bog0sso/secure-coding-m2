@@ -1,5 +1,6 @@
 package com.eknox.moneytransfer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -17,15 +18,23 @@ public  class User implements Serializable{
     private static final long serialVersionUID = 2460416724595556972L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Integer      user_ID;
+    @Column(name="user_id")
+    private Integer   userID;
     private String    nom;
     private String    prenom;
     private Date      dateNaissance;
     private String    lieuNaissance;
     private String    numeroTelephone;
     private String    email;
-    private String    adresse ;
+    private String    adresse;
+
+    // Attributes for references
+    // @Column(name = "account_id")
+    private Long      accountRefID;
+
+    @OneToOne
+    @JsonIgnore
+    private Account   account;
 
  /* public void CreateAccount()
   {

@@ -1,8 +1,11 @@
 package com.eknox.moneytransfer.entities;
 // LANGUAGE IMPORT
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.context.annotation.EnableMBeanExport;
 
+import java.util.Collection;
 import java.util.Date;
 // DEVELOPPER IMPORT
 import java.util.Currency;
@@ -25,15 +28,25 @@ public class Account {
   private Long        numCompte;
   private String      username;
   private String      password;
-  private Date        dateOuverture;
+  private Date        dateOuverture = new Date();
   private Double      balance = 0.0;
-//  private static  Device defaultDevise = Devise.XOF.name();
+  //  private static  Device defaultDevise = Devise.XOF.name();
   Currency currency = Currency.getInstance("XOF");
   // CONSTRAINTS
   //1 . BCEAO : max balance is 2_000_000
   private final Double      SOLDEMAX= 2_000_000.0;
 
-Account(String username, String password){
+  // Attribute for reference to the user
+  private Integer userRefID;
+  @OneToOne
+  @JsonIgnore
+  private User user;
+
+  // Transaction information
+  @OneToMany
+  private Collection<Transaction>  transactions;
+
+  Account(String username, String password){
   this.username = username;
   this.password = password;
 
