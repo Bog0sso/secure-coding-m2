@@ -25,9 +25,15 @@ import { transactionList } from "../../datas/transactionList";
 import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
+import TransactionModal from "../../Components/TransactionModal";
 
 const TransactionPage = () => {
-  function showTransactionDetails(id) {}
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedTransactionId, setSelectedTransactionId] = useState(1);
+  function handleTransactionClick(transactionId) {
+    setSelectedTransactionId(transactionId);
+    setModalShow(true);
+  }
   return (
     <div>
       <Container>
@@ -90,9 +96,9 @@ const TransactionPage = () => {
                         <div className="logo-circle2">
                           <BsThreeDots
                             className="text-white"
-                            onClick={showTransactionDetails(
-                              trans.transaction_ID
-                            )}
+                            onClick={() => {
+                              handleTransactionClick(trans.transaction_ID);
+                            }}
                           />
                         </div>
                       </li>
@@ -103,6 +109,11 @@ const TransactionPage = () => {
             </Card>
           </Col>
         </Row>
+        <TransactionModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          selectedtransid={selectedTransactionId}
+        />
       </Container>
     </div>
   );

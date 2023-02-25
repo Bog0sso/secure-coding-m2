@@ -1,9 +1,19 @@
 import React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
-import { CiLogout } from "react-icons/ci";
+import { CiLogout, CiEdit } from "react-icons/ci";
 import { VscAccount } from "react-icons/vsc";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 const AdminNavbar = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
     <div>
       <Navbar
@@ -33,10 +43,25 @@ const AdminNavbar = () => {
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-        <div className="text-white">
-          <pre>
-            <VscAccount /> | <CiLogout />
-          </pre>
+        <div>
+          <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+            <DropdownToggle caret color="none" className="text-white">
+              <VscAccount />
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem header>Zaid Kane</DropdownItem>
+              <DropdownItem>Some Action</DropdownItem>
+              <DropdownItem text>Dropdown Item Text</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem text>
+                Editer
+                <CiEdit />
+              </DropdownItem>
+              <DropdownItem>
+                Log out <CiLogout />
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </Navbar>
       {/* <div className="space">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam, consequuntur optio labore perspiciatis libero ullam fuga blanditiis, quidem est illum quis dolor, cum aut laborum eum accusamus magni quia sunt.</div> */}
