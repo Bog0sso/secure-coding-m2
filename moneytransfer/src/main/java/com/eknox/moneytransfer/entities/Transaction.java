@@ -1,99 +1,64 @@
 package com.eknox.moneytransfer.entities;
+
+// DEVELOPPER IMPORT
+import com.eknox.moneytransfer.enums.TypeTransaction;
+import com.eknox.moneytransfer.enums.StatusTransaction;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+// LANGUAGE IMPORT
+import java.util.Collection;
 import java.util.Date;
-import enums.*;
+
+@Data
+@Entity
+@Table(name = "transactions")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
-		private String id,numDestinataire;
-	    private Status status;
-	    private double montant;
-	    private Devise devise;
-	    private Date dateTrans;
+		//Core transaction  informations
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long 				transaction_ID;
+		private String 				numOrigine;
+		private String 				numDestinataire;
+	    private double 				montantTransaction;
+		private Date 				dateTransaction;
+		private TypeTransaction 	typeTransaction;
+		// Default valuee
+		/*
+		*	Transactions have default state of ----------- ON PROCESS -----------
+		* */
+		private StatusTransaction statusTransaction = StatusTransaction.ATTENTE; // Le status par défaut des transactions est "en attente"
 
-	    
-	
-public Transaction(String id, String numDestinataire, Status status, double montant, Devise devise,
-				Date dateTrans) {
+		//Tracing information
+		private double soldeEmetteurAvant;
+		private double soldeEmetteurApres;
+		private double soldeRecepteurAvant;
+		private double soldeRecepteurApres;
+
+		// The emitter is considered to be the one part which account balancer will decrease after the transaction
+		@OneToOne
+		private Account emitter;
+
+		// The receiver is considered to be the one part which account balance will increase after the transaction
+		@OneToOne
+		private Account receiver;
+/*public Transaction(String transaction_ID,String numOrigine, String numDestinataire, StatusTransaction statusTransaction, double montantTransaction, Devise devise,TypeTransaction typeTransaction,
+				   StatusTransaction statusTransaction) {
 			super();
-			this.setId(id);;
+			this.setTrasaction_ID(transaction_ID);
+			this.setNumOrigine(numOrigine);
 			this.setNumDestinataire(numDestinataire);
-			this.setStatus(status);
-			this.setMontant(montant);
+			this.setStatusTransaction(statusTransaction);
+			this.setMontantTransaction(montantTransaction);
 			this.setDevise(devise);
-			this.setDateTrans(dateTrans);
-		}
+			this.setDateTransaction(System.currentTimeMillis());
+		}*/
 
-
-
-private String getId() {
-	return id;
-}
-
-
-
-private void setId(String id) {
-	this.id = id;
-}
-
-
-
-private String getNumDestinataire() {
-	return numDestinataire;
-}
-
-
-
-private void setNumDestinataire(String numDestinataire) {
-	this.numDestinataire = numDestinataire;
-}
-
-
-
-private Status getStatus() {
-	return status;
-}
-
-
-
-private void setStatus(Status status) {
-	this.status = status;
-}
-
-
-
-private double getMontant() {
-	return montant;
-}
-
-
-
-private void setMontant(double montant) {
-	this.montant = montant;
-}
-
-
-
-private Devise getDevise() {
-	return devise;
-}
-
-
-
-private void setDevise(Devise devise) {
-	this.devise = devise;
-}
-
-
-
-private Date getDateTrans() {
-	return dateTrans;
-}
-
-
-
-private void setDateTrans(Date dateTrans) {
-	this.dateTrans = dateTrans;
-}
-
-
+		// Les getters et setteurs seront remplacées par des annotations Lombok pour éviter d'avoir un code extensif.
 
 
 	
