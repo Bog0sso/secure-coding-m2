@@ -470,8 +470,9 @@
 .card.card-rotate.bg-primary .back {
   background: linear-gradient(
     135deg,
-    rgb(10, 10, 10, 0.95),
-    rgb(83, 82, 81, 0.95)
+    rgb(111, 26, 182,0.95),
+    rgba(14, 209, 209, 0.95)
+    /* rgb(83, 82, 81, 0.95) */
   );
 }
 
