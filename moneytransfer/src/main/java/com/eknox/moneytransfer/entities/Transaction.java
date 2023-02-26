@@ -25,7 +25,7 @@ public class Transaction {
 		private String 				numOrigine;
 		private String 				numDestinataire;
 	    private double 				montantTransaction;
-		private Date 				dateTransaction;
+		private Date 				dateTransaction = new Date();
 		private TypeTransaction 	typeTransaction;
 		// Default valuee
 		/*

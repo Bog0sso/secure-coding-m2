@@ -41,11 +41,21 @@ public class TransactionController {
     @PostMapping(value = "")
     public void createTransaction(@RequestBody TransactionRequest request) {
         Transaction transaction = new Transaction();
-        transaction.setMontantTransaction(request.montantTranction);
+        // Transaction payload
         transaction.setNumOrigine(request.numOrigine);
         transaction.setNumDestinataire(request.numDestinataire);
-        Optional<Account> account = accountRepository.findById(request.accountID);
-        transaction.setEmitter(account.get());
+        transaction.setMontantTransaction(request.montantTranction);
+        transaction.setTypeTransaction(request.typeTransaction);
+        // Identify accounts concerned by operations
+        //1. Find emitter informations
+        Optional<Account> emitter = accountRepository.findById(request.accountID);
+        emitter.get().setBalance(emitter.get().getBalance()+ request.montantTranction);
+        transaction.setEmitter(emitter.get());
+        //2. Find receiver using the phone number
+        Account receiver = accountRepository.searchByPhoneNumber(request.numDestinataire);
+        transaction.setReceiver(receiver);
+        receiver.setBalance(receiver.getBalance()+ request.montantTranction);
+
         transactionRepository.save(transaction);
     }
     //

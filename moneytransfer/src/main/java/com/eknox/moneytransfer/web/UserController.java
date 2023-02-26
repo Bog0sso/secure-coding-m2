@@ -46,7 +46,7 @@ public class UserController {
          * Multiple unefficient database access.
          * The debt is tied to the matter of object ownership with simple id-references
          */
-        /
+
         User user = new User();
         Account account = new Account();
 

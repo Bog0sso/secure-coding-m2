@@ -44,6 +44,7 @@ public class Account {
 
   // Transaction information
   @OneToMany
+  @JsonIgnore // List of all transactions should not be returned to client
   private Collection<Transaction>  transactions;
 
   Account(String username, String password){
