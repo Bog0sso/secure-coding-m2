@@ -3,8 +3,10 @@ import { useState } from "react";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import { CiLogin } from "react-icons/ci";
 import LoginForm from "../Forms/LoginForm";
+import AddAccountForm from "..//Forms/AddAccountForm";
 const HomeNavbar = () => {
   const [modalShow, setModalShow] = useState(false);
+  const [createAccountmodalShow, setcreateAccountModalShow] = useState(false);
   return (
     <Navbar
       expand="lg"
@@ -29,12 +31,24 @@ const HomeNavbar = () => {
       </Navbar.Collapse>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <div
+        className="text-white"
+        onClick={() => setcreateAccountModalShow(true)}
+      >
+        <Button className="btn">Register</Button>
+      </div>
 
       <div className="text-white" onClick={() => setModalShow(true)}>
-        Connexion
-        <CiLogin />
+        <Button className="btn">
+          Connexion
+          <CiLogin />
+        </Button>
       </div>
       <LoginForm show={modalShow} onHide={() => setModalShow(false)} />
+      <AddAccountForm
+        show={createAccountmodalShow}
+        onHide={() => setcreateAccountModalShow(false)}
+      />
     </Navbar>
   );
 };

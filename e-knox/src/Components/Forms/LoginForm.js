@@ -61,7 +61,7 @@ const LoginForm = (props) => {
                   name="password"
                   {...register("password", {
                     required: true,
-                    pattern: /[^a-zA-Z0-9]+$/,
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,20}$/,
                     minLength: 8,
                   })}
                 />
