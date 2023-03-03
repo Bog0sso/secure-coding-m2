@@ -26,7 +26,7 @@ public class Account {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long        numCompte;
-  private String      username;
+  private String      phoneNumber;
   private String      password;
   private Date        dateOuverture = new Date();
   private Double      balance = 0.0;
@@ -47,8 +47,8 @@ public class Account {
   @JsonIgnore // List of all transactions should not be returned to client
   private Collection<Transaction>  transactions;
 
-  Account(String username, String password){
-  this.username = username;
+  Account(String phoneNumber, String password){
+  this.phoneNumber = phoneNumber;
   this.password = password;
 
 }

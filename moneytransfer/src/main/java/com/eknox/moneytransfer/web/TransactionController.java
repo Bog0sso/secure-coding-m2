@@ -32,7 +32,7 @@ public class TransactionController {
     record TransactionRequest(
             Long               accountID,
             TypeTransaction    typeTransaction,
-            double             montantTranction,
+            double             montantTransaction,
             String             numOrigine,
             String             numDestinataire
     ){}
@@ -44,17 +44,44 @@ public class TransactionController {
         // Transaction payload
         transaction.setNumOrigine(request.numOrigine);
         transaction.setNumDestinataire(request.numDestinataire);
-        transaction.setMontantTransaction(request.montantTranction);
+        transaction.setMontantTransaction(request.montantTransaction);
         transaction.setTypeTransaction(request.typeTransaction);
         // Identify accounts concerned by operations
+
+
         //1. Find emitter informations
         Optional<Account> emitter = accountRepository.findById(request.accountID);
-        emitter.get().setBalance(emitter.get().getBalance()+ request.montantTranction);
+
+        // tracking balances
+        transaction.setSoldeEmetteurAvant(emitter.get().getBalance());
+
+        // tracking balances
+
+        // emitter balance updating
+        emitter.get().setBalance(emitter.get().getBalance() - request.montantTransaction);
+        //emitter balancer updating
+
+        // tracking balances
+        transaction.setSoldeEmetteurApres(emitter.get().getBalance());
+        // tracking balances
+
         transaction.setEmitter(emitter.get());
+
         //2. Find receiver using the phone number
-        Account receiver = accountRepository.searchByPhoneNumber(request.numDestinataire);
-        transaction.setReceiver(receiver);
-        receiver.setBalance(receiver.getBalance()+ request.montantTranction);
+        Optional<Account> receiver = accountRepository.searchByPhoneNumber(request.numDestinataire);
+
+        // tracking balances
+        transaction.setSoldeRecepteurAvant(receiver.get().getBalance());
+        // tracking balances
+
+        receiver.get().setBalance(receiver.get().getBalance() + request.montantTransaction);
+
+
+        // tracking balances
+        transaction.setSoldeRecepteurApres(receiver.get().getBalance());
+        // tracking balances
+
+        transaction.setReceiver(receiver.get());
 
         transactionRepository.save(transaction);
     }
@@ -78,7 +105,7 @@ public class TransactionController {
     @PutMapping(value = "{idTransaction}")
     public void updateTransaction(@PathVariable("idTransaction") Long idTransaction,@RequestBody TransactionRequest request ) {
         Transaction transaction = transactionRepository.findById(idTransaction).get();
-        transaction.setMontantTransaction(request.montantTranction);
+        transaction.setMontantTransaction(request.montantTransaction);
         transaction.setNumOrigine(request.numOrigine);
         transaction.setNumDestinataire(request.numDestinataire);
         transactionRepository.save(transaction);

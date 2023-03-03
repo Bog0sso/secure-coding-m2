@@ -24,7 +24,7 @@ public class AccountController {
     private AccountRepository accountRepository;
     // Request body model
     record AccountRequest(
-            String  username,
+            String  phoneNumber,
             String  password,
             double  balance,
             String  currency,
@@ -67,7 +67,7 @@ public class AccountController {
     @PutMapping(value = "{idAccount}")
     public void updateAccount(@PathVariable("idAccount") Long idAccount,@RequestBody AccountRequest request ) {
         Account account = accountRepository.findById(idAccount).get();
-        account.setUsername(request.username);
+        account.setPhoneNumber(request.phoneNumber);
         account.setPassword(request.password);
         accountRepository.save(account);
     }

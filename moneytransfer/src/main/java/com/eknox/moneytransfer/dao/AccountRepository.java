@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     //@Query("select u from User u where u.numeroTelephone like :queryString")
     //public Page<User> searchUser(@Param("queryString") String keyword,Pageable pageable);
-    @Query("select u from Account u where u.username = :username")
-    public Account searchByPhoneNumber(@Param("username") String username);
+    @Query("select u from Account u where u.phoneNumber = :phoneNumber")
+    public Optional<Account> searchByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 }

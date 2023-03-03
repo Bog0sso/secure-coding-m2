@@ -31,7 +31,7 @@ public class UserController {
             String    prenom,
             Date      dateNaissance,
             String    lieuNaissance,
-            String    numeroTelephone,
+            String    phoneNumber,
             String    email,
             String    adresse,
             Long      accountID
@@ -55,11 +55,12 @@ public class UserController {
         user.setPrenom(request.prenom);
         user.setDateNaissance(request.dateNaissance);
         user.setLieuNaissance(request.lieuNaissance);
-        user.setNumeroTelephone(request.numeroTelephone);
+        user.setPhoneNumber(request.phoneNumber);
         user.setEmail(request.email);
         user.setAdresse(request.adresse);
         //account is assigned to user
         user.setAccount(account);
+        account.setPhoneNumber(request.phoneNumber);
         // account information are saved
         accountRepository.save(account);
         // reference from user to account is made - so the ownership is set
@@ -97,7 +98,7 @@ public class UserController {
         user.setPrenom(request.prenom);
         user.setDateNaissance(request.dateNaissance);
         user.setLieuNaissance(request.lieuNaissance);
-        user.setNumeroTelephone(request.numeroTelephone);
+        user.setPhoneNumber(request.phoneNumber);
         user.setEmail(request.email);
         user.setAdresse(request.adresse);
         // user.setAccountID(request.accountID);
