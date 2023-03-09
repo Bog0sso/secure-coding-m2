@@ -58,7 +58,8 @@ public class TransactionController {
         // tracking balances
 
         // emitter balance updating
-        emitter.get().setBalance(emitter.get().getBalance() - request.montantTransaction);
+        emitter.get().debiter(request.montantTransaction); // More resilient
+        //emitter.get().setBalance(emitter.get().getBalance() - request.montantTransaction); // Less resilient
         //emitter balancer updating
 
         // tracking balances
@@ -73,8 +74,8 @@ public class TransactionController {
         // tracking balances
         transaction.setSoldeRecepteurAvant(receiver.get().getBalance());
         // tracking balances
-
-        receiver.get().setBalance(receiver.get().getBalance() + request.montantTransaction);
+        receiver.get().crediter(request.montantTransaction); // more resilient
+        //receiver.get().setBalance(receiver.get().getBalance() + request.montantTransaction); // less resilient
 
 
         // tracking balances

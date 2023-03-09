@@ -26,6 +26,7 @@ public class Transaction {
 		private String 				numDestinataire;
 	    private double 				montantTransaction;
 		private Date 				dateTransaction = new Date();
+		@Enumerated(EnumType.STRING)
 		private TypeTransaction 	typeTransaction;
 		// Default valuee
 		/*

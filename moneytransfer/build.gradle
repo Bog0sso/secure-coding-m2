@@ -37,6 +37,12 @@ dependencies {
 	//compile 'javax.xml.bind:jaxb-api:2.3.0'
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
 	//hibernate added dependency
+
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+	// spring security
+	implementation 'org.springframework.security:spring-security-core:6.0.1'
+
+
 }
 
 tasks.named('test') {

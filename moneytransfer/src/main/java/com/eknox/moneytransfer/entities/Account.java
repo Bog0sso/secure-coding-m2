@@ -67,6 +67,8 @@ public void afficher()
 public synchronized void debiter(double montant)
 {
 montant = montant >=0 ? montant : -montant;
+// 1. Contrainte 1: solde >= montant débit
+
 if(this.balance >= montant)
 {
   this.balance -= montant;
@@ -80,7 +82,7 @@ if(this.balance >= montant)
 */
 public synchronized void crediter(double montant)
 {
-  // On doit créditer les comptes en tenant compte de la variable
+  // On doit créditer les comptes en tenant compte de la variable SOLDEMAX
 montant = montant >= 0 ? montant : -montant;
 if(this.balance + montant <= SOLDEMAX)
   this.balance += montant;
